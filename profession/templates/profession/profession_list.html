@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Салех Осама Наср Ахмед Алави - Тема 13 (Backend-программист)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Chart.js CDN -->
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a, #333);  /* Subtle gradient */
+            color: #e0e0e0;
+        }
+
+        header {
+            background: linear-gradient(90deg, #ff4d4d, #e60000);
+            color: #fff;
+            text-align: center;
+            padding: 60px 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            letter-spacing: 2px;
+            border-bottom: 5px solid #ff4d4d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ff4d4d;
+            transform: scale(1.1);
+        }
+
+        main {
+            padding: 80px 30px;
+            background-color: #2a2a2a;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+        }
+
+        main h2 {
+            text-align: center;
+            color: #ff4d4d;
+            font-size: 3rem;
+            margin-bottom: 40px;
+        }
+
+        .profession {
+            margin-bottom: 60px;
+            padding: 30px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profession:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .profession h3 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .profession p {
+            margin: 15px 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .profession strong {
+            color: #ff4d4d;
+        }
+
+        .profession canvas {
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profession .deed-link {
+            margin-top: 25px;
+            display: block;
+            text-align: center;
+            font-size: 1.4rem;
+            color: #ff4d4d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .profession .deed-link:hover {
+            color: #b30000;
+            transform: scale(1.05);
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #ff4d4d;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #b30000;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin: 15px 0;
+            }
+
+            main {
+                margin: 20px;
+                padding: 30px;
+            }
+
+            .profession {
+                padding: 25px;
+            }
+
+            .profession h3 {
+                font-size: 1.8rem;
+            }
+
+            .profession p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Professions List</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'profession_list' %}">Home</a></li>
+            <li><a href="{% url 'general_statistics' %}">General Statistics</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Profession Details</h2>
+
+        {% for profession in professions %}
+        <div class="profession">
+            <h3>{{ profession.title }}</h3>
+            <p><strong>Salary Range:</strong> ${{ profession.salary_from }} - ${{ profession.salary_to }}</p>
+            <p><strong>City:</strong> {{ profession.city }}</p>
+            <p><strong>Key Skills:</strong> {{ profession.key_skills }}</p>
+            <p><strong>Description:</strong> {{ profession.description }}</p>
+            <p><strong>Date Posted:</strong> {{ profession.date_posted }}</p>
+
+            <!-- Add Chart for Salary Distribution -->
+            <canvas id="salaryChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <script>
+                var ctx = document.getElementById('salaryChart-{{ profession.id }}').getContext('2d');
+                var salaryChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Min Salary', 'Max Salary'],
+                        datasets: [{
+                            label: 'Salary Distribution',
+                            data: [{{ profession.salary_from }}, {{ profession.salary_to }}],
+                            backgroundColor: ['rgba(230, 0, 0, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(230, 0, 0, 1)', 'rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+
+            <!-- Pie chart for Key Skills -->
+            <canvas id="skillsChart-{{ profession.id }}" width="400" height="200"></canvas>
+            <script>
+                var skills = "{{ profession.key_skills }}".split(',');  // Split key_skills string into an array
+                var skillCount = skills.length;
+                var skillsData = new Array(skillCount).fill(100 / skillCount);  // Simple example: distribute equally
+
+                var ctx = document.getElementById('skillsChart-{{ profession.id }}').getContext('2d');
+                var skillsChart = new Chart (ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: skills,  // Use dynamic skills
+                        datasets: [{
+                            label: 'Key Skills Distribution',
+                            data: skillsData,  // Use dynamic data
+                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            </script>
+
+            <!-- Clickable Links as Buttons -->
+            <a href="{% url 'deed_to_deed' profession.id %}" class="button">Click here to see deed-to-deed details</a>
+            <a href="{% url 'geography' profession.id %}" class="button">View Geography</a>
+            <a href="{% url 'skills_view' profession.id %}" class="button">View Skills</a>
+            <a href="{% url 'last_vacancies' profession.id %}" class="button">View Last Vacancies</a>
+        </div>
+        {% endfor %}
+    </main>
+
+    <footer>
+        <p>Full Name: Салех Осама Наср Ахмед | Academic Group: РИ-230911</p>
+    </footer>
+</body>
+</html>

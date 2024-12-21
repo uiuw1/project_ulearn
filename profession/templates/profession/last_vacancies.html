@@ -1,0 +1,149 @@
+{% block content %}
+  <div class="container">
+    <h1 class="page-title">Last 24 Hours Vacancies</h1>
+
+    <!-- Back Button -->
+    <a href="{% url 'profession_list' %}" class="btn btn-back">Back to Profession List</a>
+
+    <!-- Vacancies Table -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Vacancy Name</th>
+          <th>Description</th>
+          <th>Skills</th>
+          <th>Company</th>
+          <th>Salary</th>
+          <th>Region</th>
+          <th>Date Published</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vacancy in vacancies %}
+          <tr>
+            <td>{{ vacancy.name }}</td>
+            <td>{{ vacancy.description }}</td>
+            <td>{{ vacancy.skills|join:", " }}</td>
+            <td>{{ vacancy.company.name }}</td>
+            <td>{{ vacancy.salary.from }} - {{ vacancy.salary.to }}</td>
+            <td>{{ vacancy.region.name }}</td>
+            <td>{{ vacancy.date_published }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="no-data">No vacancies found in the last 24 hours.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+<!-- Modern CSS -->
+<style>
+  /* General Styling */
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    color: #f4f4f4;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+  }
+
+  .btn-back {
+    display: inline-block;
+    background-color: #343a40;
+    color: white;
+    padding: 12px 24px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-back:hover {
+    background-color: #23272b;
+  }
+
+  /* Table Styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #2c2c2c;
+  }
+
+  .table th,
+  .table td {
+    padding: 16px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  .table th {
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .table tr:nth-child(even) {
+    background-color: #3c3c3c;
+  }
+
+  .table tr:hover {
+    background-color: #444444;
+  }
+
+  .table td {
+    font-size: 14px;
+    color: #ddd;
+  }
+
+  /* No Data Message */
+  .no-data {
+    text-align: center;
+    font-size: 18px;
+    color: #999;
+    padding: 20px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.8rem;
+    }
+
+    .btn-back {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+
+    .table th,
+    .table td {
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .table {
+      font-size: 12px;
+    }
+  }
+</style>

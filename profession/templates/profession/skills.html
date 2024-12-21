@@ -1,0 +1,104 @@
+{% block content %}
+  <h1 class="text-center mb-4" style="color: #ff4d4d;">Top 20 Skills for {{ profession.title }}</h1>
+
+  <div class="container">
+    <!-- Back Button -->
+    <div class="text-center mb-4">
+      <a href="{% url 'profession_list' %}" class="btn btn-back">Back to Profession List</a>
+    </div>
+
+    <!-- Skills Table -->
+    <div class="mb-5">
+      <h3 class="text-red mb-3">Top 20 Skills by Frequency</h3>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Skill</th>
+            <th>Frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for skill, count in top_20_skills %}
+            <tr>
+              <td>{{ skill }}</td>
+              <td>{{ count }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Skills Chart -->
+    <div class="mb-5">
+      <h3 class="text-red mb-3">Skills Frequency Chart</h3>
+      <div class="text-center">
+        <img src="data:image/png;base64,{{ image_base64 }}" alt="Skills Chart" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+<style>
+  /* Custom Styles */
+  body {
+    background-color: #121212;
+    color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mb-5 {
+    margin-bottom: 2rem;
+  }
+
+  .btn-back {
+    background-color: #343a40;
+    border-color: #343a40;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .btn-back:hover {
+    background-color: #23272b;
+    border-color: #23272b;
+  }
+
+  .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+  }
+
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #2c2c2c;
+  }
+
+  .thead-dark {
+    background-color: #ff4d4d;
+    color: white;
+  }
+
+  .text-red {
+    color: #ff4d4d;
+  }
+
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

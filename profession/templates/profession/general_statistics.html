@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a); /* Gradient background */
+            color: #e0e0e0;
+        }
+
+        header {
+            background: linear-gradient(90deg, #ff4d4d, #e60000); /* Gradient red */
+            color: #fff;
+            text-align: center;
+            padding: 60px 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            letter-spacing: 2px;
+            border-bottom: 5px solid #ff4d4d;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 25px;
+        }
+
+        nav ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ff4d4d;
+            transform: scale(1.1);
+        }
+
+        main {
+            padding: 80px 30px;
+            background-color: #2a2a2a;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+        }
+
+        main h2 {
+            text-align: center;
+            color: #ff4d4d;
+            font-size: 3rem;
+            margin-bottom: 40px;
+        }
+
+        section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        section table th, section table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        section table th {
+            background-color: #f4f4f4;
+        }
+
+        section table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        section table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        section canvas {
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin: 15px 0;
+            }
+
+            main {
+                margin: 20px;
+                padding: 30px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            section h3 {
+                font-size: 1.8rem;
+            }
+
+            section p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>General Statistics</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'profession_list' %}">Home</a></li>
+            <li><a href="{% url 'general_statistics' %}">General Statistics</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Dynamics of Wages by Year</h2>
+            <canvas id="salaryChart"></canvas>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Average Salary (Rubles)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for year, salary in salary_dynamics.items %}
+                    <tr>
+                        <td>{{ year }}</td>
+                        <td>{{ salary }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Vacancies by Year</h2>
+            <canvas id="vacanciesChart"></canvas>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Number of Vacancies</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in vacancies_by_year %}
+                    <tr>
+                        <td>{{ data.year }}</td>
+                        <td>{{ data.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Salary by Cities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Average Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in salary_by_city %}
+                    <tr>
+                        <td>{{ data.city }}</td>
+                        <td>{{ data.avg_salary }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Share of Vacancies by Cities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Share (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in city_shares %}
+                    <tr>
+                        <td>{{ data.city }}</td>
+                        <td>{{ data.share }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Top 20 Skills</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill, count in top_skills %}
+                    <tr>
+                        <td>{{ skill }}</td>
+                        <td>{{ count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>Full Name: Салех Осама Наср Ахмед | Academic Group: РИ-230911</p>
+    </footer>
+
+    <script>
+        // Salary Dynamics Chart
+        const salaryCtx = document.getElementById('salaryChart').getContext('2d');
+        const salaryData = {
+            labels: [{% for year in salary_dynamics.keys %}'{{ year }}',{% endfor %}],
+            datasets: [{
+                label: 'Average Salary',
+                data: [{% for salary in salary_dynamics.values %}{{ salary }},{% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+        new Chart(salaryCtx, { type: 'line', data: salaryData });
+    </script>
+</body>
+</html>

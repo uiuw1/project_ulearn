@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Professions</title>
+</head>
+<body>
+    <header>
+        <h1>My IT Profession Project</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Available IT Professions</h2>
+        <ul>
+            {% for profession in professions %}
+                <li>
+                    <a href="{% url 'profession_detail' profession.id %}">{{ profession.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <footer>
+         <p>Full Name: Салех Осама Наср Ахмед | Academic Group: РИ-230911</p>
+    </footer>
+</body>
+</html>

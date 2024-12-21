@@ -1,0 +1,179 @@
+{% block content %}
+  <h1 class="text-center text-danger">{{ profession.title }} - Deed to Deed</h1>
+
+  <div class="container mt-4">
+    <!-- Back Button -->
+    <div class="mb-3">
+      <a href="javascript:history.back()" class="btn btn-dark">Back</a>
+    </div>
+
+    <!-- Salary Dynamics by Year Table and Graph -->
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="text-danger">Dynamics of Wages by Year</h3>
+        <!-- Table for salary dynamics -->
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Year</th>
+              <th>Average Salary (RUB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for year, avg_salary in salary_dynamics.items %}
+              <tr>
+                <td>{{ year }}</td>
+                <td>{{ avg_salary|floatformat:2 }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-6">
+        <h3 class="text-danger">Salary Dynamics by Year (Graph)</h3>
+        <canvas id="salaryChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Vacancies Dynamics by Year Table and Graph -->
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <h3 class="text-danger">Dynamics of the Number of Vacancies by Year</h3>
+        <!-- Table for vacancies dynamics -->
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Year</th>
+              <th>Number of Vacancies</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in vacancies_by_year %}
+              <tr>
+                <td>{{ item.year }}</td>
+                <td>{{ item.count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-6">
+        <h3 class="text-danger">Vacancies Dynamics by Year (Graph)</h3>
+        <canvas id="vacanciesChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for rendering graphs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Data for the Salary Dynamics Chart
+    var salaryData = {
+      labels: [{% for year in salary_dynamics.keys %}'{{ year }}',{% endfor %}],
+      datasets: [{
+        label: 'Average Salary (RUB)',
+        data: [{% for avg_salary in salary_dynamics.values %}{{ avg_salary|floatformat:2 }},{% endfor %}],
+        borderColor: 'rgba(255, 0, 0, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+        borderWidth: 1
+      }]
+    };
+
+    // Configuration for the Salary Dynamics Chart
+    var salaryConfig = {
+      type: 'line',
+      data: salaryData,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    // Render the Salary Dynamics Chart
+    var salaryChart = new Chart(document.getElementById('salaryChart'), salaryConfig);
+
+    // Data for the Vacancies Dynamics Chart
+    var vacanciesData = {
+      labels: [{% for item in vacancies_by_year %}'{{ item.year }}',{% endfor %}],
+      datasets: [{
+        label: 'Number of Vacancies',
+        data: [{% for item in vacancies_by_year %}{{ item.count }},{% endfor %}],
+        borderColor: 'rgba(0, 0, 0, 1)',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        borderWidth: 1
+      }]
+    };
+
+    // Configuration for the Vacancies Dynamics Chart
+    var vacanciesConfig = {
+      type: 'bar',
+      data: vacanciesData,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    // Render the Vacancies Dynamics Chart
+    var vacanciesChart = new Chart(document.getElementById('vacanciesChart'), vacanciesConfig);
+  </script>
+
+  <!-- Add some modern styling -->
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #121212;
+      color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #1c1c1c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .table {
+      border-radius: 8px;
+    }
+
+    .table th, .table td {
+      text-align: center;
+    }
+
+    .btn-dark {
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 4px;
+      background-color: #343a40;
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-dark:hover {
+      background-color: #23272b;
+    }
+
+    .text-danger {
+      color: #ff4d4d;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .thead-dark th {
+      background-color: #343a40;
+      color: white;
+    }
+  </style>
+{% endblock %}
